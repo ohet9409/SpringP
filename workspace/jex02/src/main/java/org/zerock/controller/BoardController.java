@@ -25,44 +25,51 @@ import lombok.extern.log4j.Log4j;
 public class BoardController {
 
 	// 생성자를 만들지 않을 경우
-	//@Setter(onMethod_= {@Autowired})
+	// @Setter(onMethod_= {@Autowired})
 	private BoardService service;
-	
+
 	@GetMapping("/list")
 	public void list(Model model) {
 		log.info("list");
 		model.addAttribute("list", service.getList());
 	}
-	
+
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 		log.info("register: " + board);
 		service.register(board);
-		//rttr.addFlashAttribute("result",board.getBno());
+		// rttr.addFlashAttribute("result",board.getBno());
 		return "redirect:/board/list";
 	}
-	
+
+	// 입력페이지 보여주기
+	@GetMapping("/register")
+	public void register() {
+		// TODO Auto-generated method stub
+
+	}
+
 	@GetMapping("/get")
 	public void get(Model model, @RequestParam("bno") Long bno) {
 		log.info("/get");
 		model.addAttribute("board", service.get(bno));
 	}
-	
+
 	@PostMapping("/modify")
 	public String modify(BoardVO board, RedirectAttributes rttr) {
 		log.info("modify: " + board);
-		
+
 		if (service.modify(board)) {
-			rttr.addFlashAttribute("result","success");
+			rttr.addFlashAttribute("result", "success");
 		}
 		return "redirect:/board/list";
 	}
-	
+
 	@PostMapping("/remove")
 	public String remove(RedirectAttributes rttr, @RequestParam("bno") Long bno) {
 		log.info("/remove..." + bno);
 		if (service.remove(bno)) {
-			rttr.addFlashAttribute("result","success");
+			rttr.addFlashAttribute("result", "success");
 		}
 		return "redirect:/board/list";
 	}

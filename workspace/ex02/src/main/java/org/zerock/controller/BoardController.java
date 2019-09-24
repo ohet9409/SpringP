@@ -31,15 +31,24 @@ public class BoardController {
 	@GetMapping("/list")
 	public void list(Model model) {
 		log.info("list");
-		model.addAttribute("list", service.getList());
+		model.addAttribute("listBoard", service.getList());
 	}
 	
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 		log.info("register: " + board);
 		service.register(board);
-		//rttr.addFlashAttribute("result",board.getBno());
+		rttr.addFlashAttribute("result",board.getBno());
+		
+		// /board/list로 화면전환
 		return "redirect:/board/list";
+	}
+	
+	// 입력페이지 보여주기
+	@GetMapping("/register")
+	public void register() {
+		// TODO Auto-generated method stub
+
 	}
 	
 	@GetMapping("/get")
