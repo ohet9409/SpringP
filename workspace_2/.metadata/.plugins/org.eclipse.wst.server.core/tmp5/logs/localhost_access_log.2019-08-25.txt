@@ -1,0 +1,7 @@
+127.0.0.1 - - [25/Aug/2019:19:35:17 +0900] "GET / HTTP/1.1" 200 164
+0:0:0:0:0:0:0:1 - - [25/Aug/2019:19:35:22 +0900] "GET /board/register HTTP/1.1" 200 24073
+0:0:0:0:0:0:0:1 - - [25/Aug/2019:19:35:22 +0900] "GET /resources/vendor/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 404 1047
+0:0:0:0:0:0:0:1 - - [25/Aug/2019:19:35:41 +0900] "GET /board/list HTTP/1.1" 200 27184
+0:0:0:0:0:0:0:1 - - [25/Aug/2019:19:35:41 +0900] "GET /resources/vendor/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 404 1047
+0:0:0:0:0:0:0:1 - - [25/Aug/2019:19:35:46 +0900] "GET /board/register HTTP/1.1" 200 24073
+0:0:0:0:0:0:0:1 - - [25/Aug/2019:19:35:46 +0900] "GET /resources/vendor/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 404 1047
