@@ -13,9 +13,9 @@
 	</div>
 	<!-- /#wrapper -->
 
-	<!--  <!-- jQuery -->
-	<script src="/resources/vendor/jquery/jquery.min.js"></script>
-	-->
+	  <!-- jQuery -->
+	<!-- <script src="/resources/vendor/jquery/jquery.min.js"></script> -->
+	
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="/resources/vendor/bootstrap/js/bootstrap.min.js"></script>

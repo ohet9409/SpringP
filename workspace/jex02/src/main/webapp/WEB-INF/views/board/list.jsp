@@ -29,7 +29,7 @@
 							<th>수정일</th>
 						</tr>
 					</thead>
-					<c:forEach items="${listBoard}" var="board">
+					<c:forEach items="${list}" var="board">
 						<tr>
 							<td><c:out value="${board.bno }"></c:out></td>
 							<td><a href="/board/get?bno=<c:out value='${board.bno }'/>"> <c:out value="${board.title }"></c:out></a></td>
