@@ -25,6 +25,9 @@
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 					<form action="/board/modify" role="form" method="post">
+					<!-- 추가 -->
+					<input type="hidden" name="pageNum" value="${cri.pageNum}"> 
+					<input type="hidden" name="amount" value="${cri.amount}">
 						<div class="form-group">
 							<label>Bno</label><input class="form-control" name="bno"
 								value="<c:out value='${board.bno}'/>" readonly="readonly">
@@ -72,7 +75,12 @@
 				/* self.location="/board/list";
 				return; */
 				formObj.attr("action", "/board/list").attr("method","get");
+				var pageNumTag = $("input[name='pageNum']").clone();
+				var amountTag = $("input[name='amount']").clone();
+				
 				formObj.empty();
+				formObj.append(pageNumTag);
+				formObj.append(amountTag);
 			}
 			formObj.submit();
 		});

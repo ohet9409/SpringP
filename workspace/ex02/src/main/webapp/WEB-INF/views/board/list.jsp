@@ -15,7 +15,11 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">Board List Page <button id='regBtn' type="button" class="btn btn-xs pull-right">Register New Board</button> </div>
+			<div class="panel-heading">
+				Board List Page
+				<button id='regBtn' type="button" class="btn btn-xs pull-right">Register
+					New Board</button>
+			</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<table width="100%"
@@ -32,7 +36,9 @@
 					<c:forEach items="${listBoard}" var="board">
 						<tr>
 							<td><c:out value="${board.bno }"></c:out></td>
-							<td><a href="/board/get?bno=<c:out value='${board.bno }'/>"> <c:out value="${board.title }"></c:out></a></td>
+							<td><a class="move" href='<c:out value="${board.bno }"/>'>
+									<c:out value="${board.title }"></c:out>
+							</a></td>
 							<td><c:out value="${board.writer }"></c:out></td>
 							<td><fmt:formatDate value="${board.regdate }"
 									pattern="yyyy-MM-dd" /></td>
@@ -42,6 +48,26 @@
 					</c:forEach>
 				</table>
 				<!-- table태그의 끝 -->
+				<div class="pull-right">
+					<ul class="pagination">
+						<c:if test="${pageMaker.prev}">
+							<li class="paginate_button previous"><a
+								href="${pageMaker.startPage-1 }">Previous</a></li>
+						</c:if>
+
+						<c:forEach var="num" begin="${pageMaker.startPage}"
+							end="${pageMaker.endPage}">
+							<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active":""}"><a
+								href="${num}">${num }</a></li>
+						</c:forEach>
+
+						<c:if test="${pageMaker.next }">
+							<li class="paginate_button next"><a
+								href="${pageMaker.endPage+1 }">Next</a></li>
+						</c:if>
+					</ul>
+				</div>
+
 				<!-- Modal 추가 -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 					aria-labelledby="myModalLabel" aria-hidden="true">
@@ -73,30 +99,69 @@
 	<!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
-<script type="text/javascript">
-	$(document).ready(
-			function() {
-				//alert("result1: ");
-				//console.log("test");
-				var result = '<c:out value="${result}"/>';
-				//alert("result: " + result);
-				checkModal(result);
-				history.replaceState({}, null, null);
+<form id="actionForm" action="/board/list" method="get">
+	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+	<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 
-				function checkModal(result) {
-					if (result === '' || history.state) {
-						return;
-					}
-					if (parseInt(result) > 0) {
-						$(".modal-body").html(
-								"게시글 " + parseInt(result) + " 번이 등록되었습니다.");
-					}
-					$("#myModal").modal("show");
-				}
-				$("#regBtn").on("click", function() {
-					self.location = "/board/register";
-				});
-			});
+</form>
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						//alert("result1: ");
+						//console.log("test");
+						var result = '<c:out value="${result}"/>';
+						//alert("result: " + result);
+						checkModal(result);
+						history.replaceState({}, null, null);
+
+						function checkModal(result) {
+							if (result === '' || history.state) {
+								return;
+							}
+							if (parseInt(result) > 0) {
+								$(".modal-body").html(
+										"게시글 " + parseInt(result)
+												+ " 번이 등록되었습니다.");
+							}
+							$("#myModal").modal("show");
+						}
+						$("#regBtn").on("click", function() {
+							self.location = "/board/register";
+						});
+
+						var actionForm = $("#actionForm");
+						$(".paginate_button a").on(
+								"click",
+								function(e) {
+
+									e.preventDefault(); // a태그를 클릭해도 페이지 이동이 없도록
+
+									console.log("click");
+
+									actionForm.find("input[name='pageNum']")
+											.val($(this).attr("href"));
+									actionForm.submit();
+								});
+
+						$(".move")
+								.on(
+										"click",
+										function(e) {
+
+											e.preventDefault();
+											// form태그의 input 태그 생성 bno값을 전달
+											actionForm
+													.append("<input type='hidden' name='bno' value='"
+															+ $(this).attr(
+																	"href")
+															+ "'>");
+											// form태그의 action을 "/board/get" 으로 변경
+											actionForm.attr("action",
+													"/board/get");
+											actionForm.submit();
+										});
+					});
 </script>
 <%@include file="../includes/footer.jsp"%>
 

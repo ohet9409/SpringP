@@ -40,7 +40,7 @@ public class BoardServiceTests {
 	}
 	//@Test
 	public void testGetList() {
-		service.getList().forEach(board1 -> log.info(board1));
+		service.getList(null).forEach(board1 -> log.info(board1));
 
 	}
 	
