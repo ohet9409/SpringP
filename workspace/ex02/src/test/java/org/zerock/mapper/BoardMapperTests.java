@@ -22,22 +22,21 @@ public class BoardMapperTests {
 
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
-	
 
 	// @Test
 	public void testGetList() {
 		mapper.getList().forEach(board -> log.info(board));
-		
+
 	}
 
-	 @Test
+	// @Test
 	public void testPaging() {
 		Criteria cri = new Criteria();
-		//10개씩 3페이지
+		// 10개씩 3페이지
 		cri.setAmount(10);
 		cri.setPageNum(3);
 		List<BoardVO> list = mapper.getListWithPaging(cri);
-		list.forEach(board1->log.info(board1));
+		list.forEach(board1 -> log.info(board1));
 	}
 
 	// @Test
@@ -84,5 +83,15 @@ public class BoardMapperTests {
 		boardVO.setWriter("userOH");
 		int count = mapper.update(boardVO);
 		log.info("UPDATE COUNT: " + count);
+	}
+
+	@Test
+	public void testSearch() {
+		Criteria cri = new Criteria();
+
+		cri.setKeyword("새로");
+		cri.setType("TC");
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board1 -> log.info(board1));
 	}
 }

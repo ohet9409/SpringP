@@ -1,11 +1,14 @@
 package org.zerock.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -57,7 +60,7 @@ public class BoardMapperTests {
 		log.info("Delete count: " + mapper.delete(143L));
 	}
 	
-	@Test
+	//@Test
 	public void testUpdate() {
 		BoardVO boardVO = new BoardVO();
 		// 실행전 존재하는 번호인지 확인할 것
@@ -67,5 +70,15 @@ public class BoardMapperTests {
 		boardVO.setWriter("userOH");
 		int count = mapper.update(boardVO);
 		log.info("UPDATE COUNT: " + count);
+	}
+	
+	@Test
+	public void testSearch() {
+		Criteria cri = new Criteria();
+
+		cri.setKeyword("새로");
+		cri.setType("TC");
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board1 -> log.info(board1));
 	}
 }
