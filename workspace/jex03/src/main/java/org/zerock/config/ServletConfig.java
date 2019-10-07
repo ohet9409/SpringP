@@ -1,14 +1,8 @@
 package org.zerock.config;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,7 +15,6 @@ public class ServletConfig implements WebMvcConfigurer{
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
-		
 		InternalResourceViewResolver bean = new InternalResourceViewResolver();
 		bean.setViewClass(JstlView.class);
 		bean.setPrefix("/WEB-INF/views/");
@@ -31,25 +24,6 @@ public class ServletConfig implements WebMvcConfigurer{
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		// TODO Auto-generated method stub
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-	}
-	
-	public CommonsMultipartResolver getResolver() throws IOException {
-		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-		
-		// 10MB
-		resolver.setMaxUploadSize(1024*1024*10);
-		
-		// 2MB
-		resolver.setMaxUploadSizePerFile(1024*1024*2);
-		
-		// 1MB
-		resolver.setMaxInMemorySize(1024*1024);
-		
-		// temp upload
-		resolver.setUploadTempDir(new FileSystemResource("C:\\upload\\tmp"));
-		resolver.setDefaultEncoding("UTF-8");
-		return resolver;
 	}
 }
