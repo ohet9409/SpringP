@@ -1,3 +1,24 @@
+-- 댓글수 컬럼 추가
+alter TABLE TBL_BOARD add (replycnt number default 0);
+
+-- 댓글 수를 테이블에 추가
+update tbl_board set replycnt = (select count(rno) from TBL_REPLY where tbl_reply.bno = tbl_board.bno);
+
+commit;
+-- 트랜잭션의 실습
+create table tbl_sample1(
+    col1 varchar2(500)
+);
+create table tbl_sample2(
+    col2 varchar2(50)
+);
+
+select * from TBL_SAMPLE1;
+select * from TBL_SAMPLE2;
+delete TBL_SAMPLE1;
+delete TBL_SAMPLE2;
+
+select * from TBL_BOARD order by bno desc;
 create table tbl_attach(
     uuid VARCHAR2(100) not null,
     uploadPath varchar2(200) not null,
@@ -16,8 +37,18 @@ create index idx_reply on tbl_reply (bno desc, rno asc);
 select rno, bno, reply, replyer, replydate, updatedate from(
 select /*+index(tbl_reply idx_reply)*/
 rownum rn, bno, rno, reply, replyer, replyDate, updatedate
-from tbl_reply where bno = 18 and rno >0 and rownum <=20)
+from tbl_reply where bno = 1 and rno >0 and rownum <=20)
 where rn >10;
+--
+--재귀 복사를 통해서 데이터의 개수를 늘린다. 반복해서 여러 번 실행
+insert into tbl_reply(rno, bno, reply, replyer)
+(select seq_reply.nextval, bno, reply, replyer from tbl_reply);
+--
+select /*+index(tbl_reply idx_reply*/
+rownum rn, bno, rno, reply, replyer, replyDate, updatedate
+from tbl_reply
+where bno = 1
+and rno > 0;
 select rno, bno, reply, replyer, replyDate, updatedate from tbl_reply where bno = 18 order by rno asc;
 select * from tbl_reply order by rno desc;
 commit;
@@ -44,6 +75,8 @@ select rno, bno, reply, replyer, replyDate, updatedate from tbl_reply where bno 
 select * from tbl_reply order by rno desc;
 commit;
 select * from tbl_board where rownum < 10 order by bno desc;
+drop SEQUENCE seq_reply;
+drop table tbl_reply cascade CONSTRAINTS;
 create SEQUENCE seq_reply;
 create table tbl_reply(
     rno NUMBER(10,0),
@@ -55,8 +88,10 @@ create table tbl_reply(
 );
 alter table tbl_reply add constraint pk_reply primary key (rno);
 alter table tbl_reply add constraint fk_reply_board foreign key (bno) references tbl_board(bno);
--------------------------------------------
+------------------------------------------- 게시물
 SELECT DBMS_XDB.GETHTTPPORT() from dual;
+drop SEQUENCE seq_board;
+drop table tbl_board cascade CONSTRAINTS;
 create SEQUENCE seq_board;
 create table tbl_board(
     bno number(10,0),
@@ -120,7 +155,7 @@ select * from tbl_board order by bno desc;
 
 -- index를 사용해서 정렬없이 출력을 빠르게 할수있다.
 select /*+index_desc(tbl_board pk_board)*/
-* from tbl_board;
+* from tbl_board where bno > 0;
 
 select /*+index_asc(tbl_board pk_board)*/
 * from tbl_board where bno >0;
